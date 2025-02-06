@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  dev-bd:
+    image: postgres:12
+    container_name: dev-bd
+    ports:
+      - "5433:5432"  # Expose 543 from container as 5433 externally
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: todo
+    networks:
+      - azmi-network
+networks:
+  azmi-network:
