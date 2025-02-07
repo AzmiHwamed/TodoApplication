@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,8 +13,7 @@ export class TaskService {
   async findMyTask(userId: number) {
     return await this.taskRepository.find({
       where: { user: { id: userId } },
-    });
-  }
+    });}
 
   async create(createTaskDto: CreateTaskDto,
     uid: number,

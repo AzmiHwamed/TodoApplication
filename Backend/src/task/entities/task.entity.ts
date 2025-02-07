@@ -18,6 +18,9 @@ export class Task {
     @ApiProperty()
     @Column( {name: 'priority'})
     priority: string;
+    @ApiProperty()
+    @Column( {name: 'createdAt'})
+    createdAt: Date;
     @ManyToOne(() => User, (user) => user.tasks)
     user: User;
 }

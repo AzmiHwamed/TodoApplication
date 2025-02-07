@@ -8,10 +8,7 @@ import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { ApiAcceptedResponse, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-// Define an interface to extend Express' Request object
-interface AuthenticatedRequest extends Request {
-    user: { id: number; username: string }; // Ensure it matches what `validate()` returns in JWTStrategy
-}
+
 @ApiTags('Authentifications')
 @Controller('auth')
 export class AuthController {
@@ -47,12 +44,14 @@ export class AuthController {
     })
     @Post('login')
     async login(@Body() dto: AuthDto, @Res() res: Response) {
-        const result = await this.authService.login(dto);
-        if (result.success) {
-            return res.status(200).json({ data: result });
-        } else {
-            return res.status(400).json({ data: result });
-        }    }
+        return res.json(await this.authService.login(dto));
+    }
+
+
+
+
+
+
     @ApiResponse({
         status: 201,
         description: 'The signup operation has been successfully executed.',
@@ -79,12 +78,8 @@ export class AuthController {
     @ApiOperation({ summary: 'Takes the AuthDto as a body , return success true if a the operation was successfull with the tockens ,return success false with error message if the operation failed ' })
     @Post('signup')
     async signup(@Body() dto: AuthDto, @Res() res: Response) {
-        const result = await this.authService.signUp(dto);
-        if (result.success) {
-            return res.status(201).json({ data: result });
-        } else {
-            return res.status(400).json({ message: "Error signing up" });
-        }
+        return res.json(await this.authService.signUp(dto));
+
     }
     @ApiOperation({ summary: 'Takes the Refresh_Tocken in autherization header , return the new access_tocken if the operation was successful' })
     @ApiResponse({
@@ -109,16 +104,13 @@ export class AuthController {
             },
         },
     })
-    @ApiHeader({name: '-H "Authorization: Bearer {token}',
-        description: 'Authorization header to be used in the request (access token)'})
+    @ApiHeader({
+        name: '-H "Authorization: Bearer {token}',
+        description: 'Authorization header to be used in the request (access token)'
+    })
     @Get('refresh')
     @UseGuards(AuthGuard('jwt-refresh'))
-    async refresh(@Req() req: AuthenticatedRequest, @Res() res: Response) {
-        const result = await this.authService.refreshTockens(req.user.username, req.user.id);
-        if (await result.success === true) {
-            return res.status(200).json({ data: result });
-        } else {
-            return res.status(400).json({ message: "Error refreshing tokens" });
-        }
+    async refresh(@Req() req: { id: number; username: string }, @Res() res: Response) {
+        return res.json(await this.authService.refreshTockens(req.username, req.id));
     }
 }
