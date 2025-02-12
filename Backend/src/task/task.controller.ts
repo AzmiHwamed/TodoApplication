@@ -35,7 +35,7 @@ export class TaskController {
     name: '-H "Authorization: Bearer {token}',
     description: 'Authorization header to be used in the request (access token)'
   })
-  @Get('myTasks')
+  @Get('me')
   async MyTasks(@Req() req: AuthenticatedRequest, @Res() res: Response) {
     return res.status(200).json(await this.taskService.findMyTask(req.user.id));
   }

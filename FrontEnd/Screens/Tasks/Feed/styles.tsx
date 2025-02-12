@@ -6,6 +6,8 @@ const styles = StyleSheet.create({
   chips:{
     display: "flex",
     flexDirection: "row",
+    maxWidth:"100%",
+    flexWrap:'wrap'
   },
   chip:{
     margin: "2%",

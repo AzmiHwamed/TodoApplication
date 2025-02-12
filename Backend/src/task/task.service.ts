@@ -18,7 +18,7 @@ export class TaskService {
   async create(createTaskDto: CreateTaskDto,
     uid: number,
   ) {
-    const task = this.taskRepository.create({ title: createTaskDto.title, description: createTaskDto.description, status: false, priority: createTaskDto.priority, user: { id: uid } });
+    const task = this.taskRepository.create({ title: createTaskDto.title, description: createTaskDto.description, status: false, priority: createTaskDto.priority, user: { id: uid } ,createdAt:new Date().toLocaleDateString()});
     return this.taskRepository.save(task);
   }
 
