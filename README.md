@@ -1,2 +1,2 @@
 # TodoApplication
-Repository for micro app (a todoApp)
+a simple todo app made for internship training purposes .
